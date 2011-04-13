@@ -1,4 +1,4 @@
-#include "ImportDialog.h"
+#include "ImporterDialog.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFileDialog>
@@ -6,12 +6,12 @@
 
 #include <stdlib.h>
 
-ImportDialog::ImportDialog(QWidget * parent) :
-  QDialog(parent)
+ImporterDialog::ImporterDialog(QWidget * parent) :
+  QFileDialog(parent)
 {
-  setWindowTitle(tr("New Import"));
+  setWindowTitle(tr("New Importer"));
 
-  _import = new QLabel(tr("Import Name"));
+  _import = new QLabel(tr("Importer Name"));
   _importname = new QLineEdit;
   _import->setBuddy(_importname);
   
@@ -19,7 +19,7 @@ ImportDialog::ImportDialog(QWidget * parent) :
   _directoryname = new QLineEdit;
   //set a default directory from the settings
   QSettings settings;
-  settings.beginGroup("LastImport");
+  settings.beginGroup("LastImporter");
   _directoryname->setText( settings.value("directory",QString(getenv("HOME"))).toString());
   settings.endGroup();
 
@@ -55,7 +55,7 @@ ImportDialog::ImportDialog(QWidget * parent) :
   //here we need to set some signals
 }
 
-void ImportDialog::open_directory_search()
+void ImporterDialog::open_directory_search()
 {
   QFileDialog dialog(this);
   dialog.setFileMode(QFileDialog::DirectoryOnly);
@@ -70,12 +70,12 @@ void ImportDialog::open_directory_search()
     }
 }
 
-void ImportDialog::ok_clicked()
+void ImporterDialog::ok_clicked()
 {
-  //stor the directory and the filename into the Import check to see
+  //store the directory and the filename into the Importer check to see
   //if null
-  _import_pointer->set_import_name(_importname->text());
-  _import_pointer->set_import_directory(_directoryname->text());
+  _importer_pointer->set_import_name(_importname->text());
+  _importer_pointer->set_import_directory(_directoryname->text());
   accept();
 }
 

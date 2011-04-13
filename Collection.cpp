@@ -17,7 +17,7 @@
 
 #include "Collection.h"
 #include "PrefDialog.h"
-#include "ImportDialog.h"
+#include "ImporterDialog.h"
 
 Collection::Collection() :
   _current_library(0),
@@ -944,7 +944,7 @@ void Collection::scan_directory_and_import_papers()
 {
   //first we need to ask the peoples some questions
   //like what directory
-  ImportDialog dialog(this);  
+  ImporterDialog dialog(this);  
   dialog.setFileMode(QFileDialog::DirectoryOnly);
   dialog.setViewMode(QFileDialog::Detail);
   dialog.hasFocus();

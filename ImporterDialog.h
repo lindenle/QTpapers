@@ -1,25 +1,25 @@
-#ifndef __IMPORTDIALOG_H__
-#define __IMPORTDIALOG_H__
+#ifndef __IMPORTERDIALOG_H__
+#define __IMPORTERDIALOG_H__
 
-#include <QDialog>
+#include <QFileDialog>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 
-#include "Import.h"
+#include "Importer.h"
 
-class Import;
+class Importer;
 
-class ImportDialog : public QDialog
+class ImporterDialog : public QFileDialog
 {
   Q_OBJECT
 
  public:
 
-  ImportDialog(QWidget * parent = 0);
+  ImporterDialog(QWidget * parent = 0);
 
-  void set_import( Import * l )
-  {_import_pointer = l;}
+  void set_import( Importer * l )
+  {_importer_pointer = l;}
 
  public slots:
 
@@ -34,7 +34,7 @@ class ImportDialog : public QDialog
   QPushButton * _search;
   QPushButton * _ok;
   QPushButton * _cancel;
-  Import * _import_pointer;
+  Importer * _importer_pointer;
 };
 
-#endif // __IMPORTDIALOG_H__
+#endif // __IMPORTERDIALOG_H__
