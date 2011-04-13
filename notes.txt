@@ -1,0 +1,6 @@
+L. A. Linden Levy <lindenle@gmail.com> Wed Apr 13, 2011  1:08 PM
+
+Some notes of things I want to do to make this package better 
+
+1. 
+
