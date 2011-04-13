@@ -1,0 +1,21 @@
+<!DOCTYPE RCC><RCC version="1.0">
+  <qresource>
+        <file>images/document2.png</file>
+        <file>images/open.png</file>
+        <file>images/new.png</file>
+        <file>images/find.png</file>
+        <file>images/edit.png</file>
+        <file>images/remove.png</file>
+        <file>images/save.png</file>
+        <file>images/about.png</file>
+        <file>images/exit.png</file>
+        <file>images/libopen.png</file>
+        <file>images/libremove.png</file>
+        <file>images/clear.png</file>
+        <file>images/pref.png</file>
+        <file>images/import.png</file>
+        <file>images/forward.png</file>
+        <file>images/back.png</file>
+        <file>images/scan.png</file>
+  </qresource>
+</RCC>
