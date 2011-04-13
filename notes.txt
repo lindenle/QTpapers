@@ -2,5 +2,10 @@ L. A. Linden Levy <lindenle@gmail.com> Wed Apr 13, 2011  1:08 PM
 
 Some notes of things I want to do to make this package better 
 
-1. 
+1. Add multiple selections to the Rss widget so that I can also add spires.
+
+2. Need ability to parse spires. Parser Base Class and then piping for
+each type? This would make it easy to extend this to a plugin in
+framework so that anyone could write a parser for any page.
+
 

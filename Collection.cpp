@@ -371,10 +371,12 @@ void Collection::edit_paper()
 //----------------------------------------------------------------
 void Collection::delete_paper()
 {
+
+  _stdout << "Short list " << _current_library->get_current_entry()->get_author_short() << endl;
   QString question(tr("Do you want to delete the entry with\n"
 		   "title %1 \n"
-		   "and author %2").arg(_current_library->get_current_entry()->get_author(),
-					_current_library->get_current_entry()->get_title()) );
+		      "and author %2").arg( _current_library->get_current_entry()->get_title(),
+					    _current_library->get_current_entry()->get_author_short() ) );
   if ( QMessageBox::warning(this,"Delete Paper",
 			    question,
 			    QMessageBox::Ok|QMessageBox::Cancel) == QMessageBox::Ok )

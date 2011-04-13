@@ -21,6 +21,8 @@ class Entry
   QString get_author(void) const
   {return _author;}
   
+  QString get_author_short(int number=3) const;
+
   QString get_title(void) const
   {return _title;}
   
