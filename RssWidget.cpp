@@ -9,7 +9,8 @@ RssWidget::RssWidget() :
 
   _rss_view = new QWebView();
   _rss_list = new QComboBox();
-
+  _load_progress = new QProgressBar();
+  _top_splitter = new QSplitter();
   // the defaults
   _feeds["ArXiv"]=QUrl("http://arxiv.org/");
   _feeds["Spires"]=QUrl("http://www.slac.stanford.edu/spires/");
@@ -18,9 +19,16 @@ RssWidget::RssWidget() :
   update_list_box();
 
   connect(_rss_list, SIGNAL(currentIndexChanged(const QString & )), this, SLOT(set_current_rss(const QString & )));
+  connect(_rss_view, SIGNAL( urlChanged(const QUrl & ) ), this, SLOT( emit_url_changed(const QUrl &) ) );
+  connect(_rss_view, SIGNAL( loadProgress(int ) ), _load_progress, SLOT( setValue(int) ) );
+  connect(_rss_view, SIGNAL( loadStarted() ), _load_progress, SLOT( reset() ) );
 
   //pack the widgets
-  addWidget(_rss_list);  
+  _top_splitter->addWidget(_rss_list);
+  _top_splitter->addWidget(_load_progress);
+  _top_splitter->setStretchFactor(0,3);
+  _top_splitter->setStretchFactor(1,1);
+  addWidget(_top_splitter);  
   addWidget(_rss_view);  
   setOrientation(Qt::Vertical);
 
@@ -48,7 +56,7 @@ void RssWidget::update_web_view()
 {
   _rss_view->load(_current_rss);
   _rss_view->show();
-}
+ }
 
 void RssWidget::update_list_box()
 {
@@ -61,4 +69,9 @@ void RssWidget::update_list_box()
     }
   //always put "New" last
   _rss_list->addItem( "New" );
+}
+
+void RssWidget::emit_url_changed(const QUrl & url)
+{
+  emit urlChanged(url);
 }

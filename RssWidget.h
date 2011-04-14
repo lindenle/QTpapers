@@ -3,6 +3,7 @@
 
 #include <QWebView>
 #include <QComboBox>
+#include <QProgressBar>
 #include <QSplitter>
 #include <QTextStream>
 #include <QMap>
@@ -38,6 +39,12 @@ class RssWidget : public QSplitter
 
   void forward(){_rss_view->forward();}
 
+  void emit_url_changed(const QUrl & url);
+
+ signals:
+
+  void urlChanged(const QUrl & url);
+
  private:
 
   QAction * addFeed;    
@@ -51,7 +58,8 @@ class RssWidget : public QSplitter
   UrlMap _feeds;
   QWebView *  _rss_view;
   QComboBox * _rss_list;
-  
+  QProgressBar * _load_progress;
+  QSplitter * _top_splitter;
 };
 
 #endif //__RSS_WIDGET__

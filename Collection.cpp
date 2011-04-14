@@ -251,25 +251,28 @@ Collection::Collection() :
   //  update_paper_list();
   
 
+  _top_layout = new QSplitter();  
+  _top_layout->addWidget(_library_list);
+  _top_layout->addWidget(_paper_list);
+  _top_layout->setStretchFactor(0,1);
+  _top_layout->setStretchFactor(1,3);
+  _top_layout->setContentsMargins(0,0,5,0);
+  _top_layout->setOrientation(Qt::Horizontal);
 
-  _middle_bot_layout = new QSplitter;  
-  _middle_bot_layout->addWidget(_abstract_box);
-  _middle_bot_layout->addWidget(_rss_box);
-  _middle_bot_layout->setContentsMargins(0,0,0,0);
-
-  _middle_layout = new QSplitter;  
-  _middle_layout->addWidget(_paper_list);
-  _middle_layout->addWidget(_middle_bot_layout);
-  _middle_layout->setContentsMargins(0,0,5,0);
-  _middle_layout->setOrientation(Qt::Vertical);
-
+  _bot_layout = new QSplitter();  
+  _bot_layout->addWidget(_abstract_box);
+  _bot_layout->addWidget(_rss_box);
+  _bot_layout->setContentsMargins(0,0,0,0);
+  _bot_layout->setStretchFactor(0,1);
+  _bot_layout->setStretchFactor(1,3);
+  _bot_layout->setOrientation(Qt::Horizontal);
 
   _total_layout = new QSplitter();
-  _total_layout->addWidget(_library_list);
-  _total_layout->addWidget(_middle_layout);
+  _total_layout->addWidget(_top_layout);
+  _total_layout->addWidget(_bot_layout);
   _total_layout->setStretchFactor(0,1);
   _total_layout->setStretchFactor(1,3);
-  _total_layout->setStretchFactor(2,3);
+  _total_layout->setOrientation(Qt::Vertical);
 
   //this splitter window is my central widget
   setCentralWidget(_total_layout);
@@ -741,7 +744,7 @@ void Collection::add_paper_to_list(const Entry& paper, QTableWidget * list )
 //   //  list
   QTableWidgetItem * auth = new QTableWidgetItem(tr("%1").arg(paper.get_author()));
   int row = list->rowCount();
-  _stdout << "Number of rows:" << row << endl;
+  //  _stdout << "Number of rows:" << row << endl;
   list->insertRow(row);
   list->setItem(row,0,auth);
   list->setItem(row,1,title);
@@ -808,8 +811,8 @@ void Collection::readSettings()
   settings.beginGroup("Collection");
   resize(settings.value("size", QSize(700, 500)).toSize());
   move(settings.value("pos", QPoint(200, 200)).toPoint());
-  _middle_layout->restoreState(settings.value("middle").toByteArray());
-  _middle_bot_layout->restoreState(settings.value("middle_bot").toByteArray());
+  _top_layout->restoreState(settings.value("middle").toByteArray());
+  _bot_layout->restoreState(settings.value("middle_bot").toByteArray());
   _total_layout->restoreState(settings.value("total").toByteArray());
   settings.endGroup();
 
@@ -842,8 +845,8 @@ void Collection::writeSettings()
   settings.beginGroup("Collection");
   settings.setValue("size", size());
   settings.setValue("pos", pos());
-  settings.setValue("middle", _middle_layout->saveState());
-  settings.setValue("middle_bot", _middle_bot_layout->saveState());
+  settings.setValue("middle", _top_layout->saveState());
+  settings.setValue("middle_bot", _bot_layout->saveState());
   settings.setValue("total", _total_layout->saveState());
   settings.endGroup();
   settings.beginGroup("PaperList");
@@ -877,11 +880,12 @@ void Collection::check_url(const QUrl& url)
   //make sure we are looking at abstract in order to enable import.
   QString url_str = url.toString();
   _stdout << "Current URl" << url_str << endl;
+
   if ( url_str.indexOf("http://arxiv.org/abs/") != -1 )
     {
       paperImport->setEnabled(true);
     }
-  else if (  url_str.indexOf("http://www.slac.stanford.edu/spires/find/hep/") != -1 )
+  else if (  url_str.indexOf("http://www.slac.stanford.edu/spires/find/hep/www?irn") != -1 )
     {
       paperImport->setEnabled(true);
     }

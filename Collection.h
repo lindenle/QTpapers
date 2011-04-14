@@ -103,9 +103,10 @@ class Collection: public QMainWindow
   PaperList * _paper_list;
   QTextBrowser * _abstract_box;
   RssWidget * _rss_box;
-  QSplitter * _middle_layout;
+  QSplitter * _top_layout;
+  QSplitter * _bot_layout;
   QSplitter * _total_layout;
-  QSplitter * _middle_bot_layout;
+
 
   QToolBar *paperToolBar;
 

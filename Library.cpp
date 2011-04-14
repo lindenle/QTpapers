@@ -107,7 +107,7 @@ bool Library::open_library()
 
 	      if ( data_element.tagName() == "Abstract" )
 		{
-		  _stdout << data_element.text() << endl;
+		  //		  _stdout << data_element.text() << endl;
 		  entry->set_abstract( data_element.text());
 
 		}
