@@ -3,6 +3,8 @@
 #include <QVBoxLayout>
 #include <QFileDialog>
 #include <QSettings>
+#include <QDir>
+#include <QMessageBox>
 
 #include <stdlib.h>
 
@@ -75,6 +77,20 @@ void LibraryDialog::ok_clicked()
   //stor the directory and the filename into the Library check to see
   //if null
   _library_pointer->set_library_name(_libraryname->text());
+  //should we check if the directory exists
+  QDir directory(_directoryname->text());
+  if ( ! directory.exists() )
+    {
+      QString question(tr("Directory %1 does not exist. Creat it?").arg(_directoryname->text()));
+      if ( QMessageBox::warning(this,"Create Directory",
+				question,
+				QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes)
+	{
+	  directory.mkdir(directory.path());
+	}
+      else
+	reject();
+    }
   _library_pointer->set_library_directory(_directoryname->text());
   accept();
 }

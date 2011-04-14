@@ -84,9 +84,8 @@ void PrefDialog::open_search()
   if (dialog.exec())
     {
       fileNames = dialog.selectedFiles();
-      //this is a seg fault that needs to be fixed
-      //      QLineEdit * called_by = static_cast<QLineEdit *>(QObject::sender());
-      //called_by->setText(fileNames.at(0));
+      // need to know who called me so I can set the value in the correct box
+      //      _viewer->setText(fileNames.at(0));
     }  
 }
 

@@ -316,6 +316,7 @@ void Collection::new_library()
     {
       _stdout << "We should have some data in here now: " 
 	      << _current_library->get_library_file() << endl;
+
       _stdout.flush();
       new QListWidgetItem(  _current_library->get_library_name() , _library_list);
     }
