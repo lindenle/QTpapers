@@ -27,7 +27,11 @@ class RssWidget : public QSplitter
 
   void update_web_view();
 
-  void set_current_rss();
+  void set_current_rss(int index);
+
+  void back(){_rss_view->back();}
+
+  void forward(){_rss_view->forward();}
 
  private:
 
