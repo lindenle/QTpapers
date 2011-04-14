@@ -10,34 +10,55 @@ RssWidget::RssWidget() :
   _rss_view = new QWebView();
   _rss_list = new QComboBox();
 
-  //maybe loop over the list and include them...
+  // the defaults
+  _feeds["ArXiv"]=QUrl("http://arxiv.org/");
+  _feeds["Spires"]=QUrl("http://www.slac.stanford.edu/spires/");
+  _feeds["New"]=QUrl("");
 
-  _rss_list->addItem(tr("Arxiv"));
-  _rss_list->addItem(tr("New RSS"));
+  update_list_box();
 
-  connect(_rss_list, SIGNAL(currentIndexChanged(int )), this, SLOT(set_current_rss(int )));
+  connect(_rss_list, SIGNAL(currentIndexChanged(const QString & )), this, SLOT(set_current_rss(const QString & )));
 
+  //pack the widgets
   addWidget(_rss_list);  
   addWidget(_rss_view);  
-
   setOrientation(Qt::Vertical);
 
-  //here we need to make it so that the url drop down list can be
-  //selected and then it will change the rss view
+  //update the web view
   update_web_view();
+
 }
 
-void RssWidget::set_current_rss(int index)
+void RssWidget::set_current_rss(const QString & feed)
 {
-  _stdout << "set_current_rss " << index  << endl;
-  //  _current_rss = _rss_list->...
+  if ( feed == "New" )
+    {
+      //need to add a dialog here to add a feed
+      _stdout << "Feature not enabled" << endl;
+      //also need to thing about how to map a parser to the feed...
+      return;
+    }
+  _stdout << "set_current_rss " << feed  << endl;
+  _current_rss = _feeds[feed];
+  _stdout << "set_current_rss " << _current_rss.toString()  << endl;
   update_web_view();
 }
 
 void RssWidget::update_web_view()
 {
-  _rss_view->load(QUrl(_current_rss));
-
+  _rss_view->load(_current_rss);
   _rss_view->show();
 }
 
+void RssWidget::update_list_box()
+{
+  UrlMapIter miter(_feeds);
+  while ( miter.hasNext() ) 
+    {
+      miter.next();
+      if ( miter.key() != "New" )
+	_rss_list->addItem( miter.key() );
+    }
+  //always put "New" last
+  _rss_list->addItem( "New" );
+}

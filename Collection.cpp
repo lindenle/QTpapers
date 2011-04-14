@@ -876,7 +876,12 @@ void Collection::check_url(const QUrl& url)
 {
   //make sure we are looking at abstract in order to enable import.
   QString url_str = url.toString();
+  _stdout << "Current URl" << url_str << endl;
   if ( url_str.indexOf("http://arxiv.org/abs/") != -1 )
+    {
+      paperImport->setEnabled(true);
+    }
+  else if (  url_str.indexOf("http://www.slac.stanford.edu/spires/find/hep/") != -1 )
     {
       paperImport->setEnabled(true);
     }
