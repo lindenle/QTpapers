@@ -7,7 +7,7 @@ class SpiresParser : public Parser
 {
  public:
 
- SpiresParser(){;}
+  SpiresParser(){;}
 
   QString getTitle();
   QString getAuthors();
@@ -16,6 +16,7 @@ class SpiresParser : public Parser
   QUrl    getDownloadLocation();
   QDate   getDate();
   QString getNumber();
+
 };
 
 #endif //__SPIRES_PARSER__

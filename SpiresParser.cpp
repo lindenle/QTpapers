@@ -2,15 +2,26 @@
 
 QString SpiresParser::getTitle()
 {
-  QString title;
+  QString search = "<!-- START RESULTS -->";
   
+  QString title = _data.right(_data.size() - ( _data.indexOf(search) + search.size() ) );
+  search = "</b><br>"; 
+  title = title.left(title.indexOf(search) );
+  title.replace(_cleanup,"");
+  title.replace("\n","");
   return title;
 }
 
 QString SpiresParser::getAuthors()
 {
-  QString authors;
-
+  QString search = "wwwauthors";
+  QString authors = _data.right(_data.size() - ( _data.indexOf(search) + search.size() ) );
+  search = "</i></a>";
+  authors = authors.left( authors.indexOf(search) );
+  authors.replace(QRegExp(".*[0-9]>"),"");
+  authors.replace(_cleanup,"");
+  authors.replace("\n","");
+  //here we really want to grab the url from spires and get all the authors...
   return authors;
 }
 

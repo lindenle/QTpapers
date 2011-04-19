@@ -307,7 +307,7 @@ void Collection::about()
   QMessageBox::about(this, tr("About QT Papers"),
 		     tr("This program is released under the GPL.\n"
 			"Author: L. A. Linden Levy.\n"
-			"Email: lindenle@colorado.edu "));
+			"Email: lindenle@gmail.com "));
 }
 //----------------------------------------------------------------
 void Collection::new_library()
@@ -413,6 +413,8 @@ void Collection::import_paper()
 
   //now create a new paper and parse out the values we want.
   _parser->setData(frame->toHtml());
+  _stdout << "Collection::import_paper title" << _parser->getTitle() << endl;
+  _stdout << "Collection::import_paper authors" << _parser->getAuthors() << endl;
 
   Paper * paper = new Paper();
   paper->set_title(_parser->getTitle());
