@@ -906,10 +906,12 @@ void Collection::check_url(const QUrl& url)
   if ( url_str.indexOf("http://arxiv.org/abs/") != -1 )
     {
       paperImport->setEnabled(true);
+      //      _parser = new ArxivParser();
     }
   else if (  url_str.indexOf("http://www.slac.stanford.edu/spires/find/hep/www?irn") != -1 )
     {
       paperImport->setEnabled(true);
+      //      _parser = new SpiresParser();
     }
   else
     {

@@ -25,7 +25,10 @@ HEADERS += Collection.h \
            PaperDialog.h \
            PaperList.h \                      
            PrefDialog.h \
-           RssWidget.h 
+           RssWidget.h \
+           Parser.h \
+           ArxivParser.h \
+           SpiresParser.h 
 
 SOURCES += Collection.cpp \
            Entry.cpp \
@@ -39,6 +42,9 @@ SOURCES += Collection.cpp \
            PaperDialog.cpp \
            PaperList.cpp \
            PrefDialog.cpp \
-           qt_papers.cpp \
-           RssWidget.cpp 
+           RssWidget.cpp \
+           Parser.cpp \
+           ArxivParser.cpp \
+           SpiresParser.cpp \
+           qt_papers.cpp 
 
