@@ -3,7 +3,7 @@
 QString SpiresParser::getTitle()
 {
   QString title;
-
+  
   return title;
 }
 
@@ -28,9 +28,23 @@ QString SpiresParser::getPaperName()
   return name;
 }
 
-QString SpiresParser::getDownloadLocation()
+QUrl SpiresParser::getDownloadLocation()
 {
-  QString location;
+  QUrl location;
 
   return location;
+}
+
+QDate SpiresParser::getDate()
+{
+  QDate date;
+
+  return date;
+}
+
+QString SpiresParser::getNumber()
+{
+  QString number;
+
+  return number;
 }

@@ -407,95 +407,30 @@ void Collection::import_paper()
 			    "you cannot create a new paper"));
       return;
     }
-
-  _stdout << "Need to parse " << _rss_box->url().toString() << endl; 
-  //here we are just going to pass the url to the parser;
-
-  //_parser->setUrl(_rss_box->url());
-
-  //should check if this is actually a paper page
   QWebPage * page = _rss_box->page();
+  
   QWebFrame * frame = page->mainFrame();
-  //a tool for cleaning up tags
-  QRegExp cleanup("<.*>");
-  cleanup.setMinimal(true);
 
   //now create a new paper and parse out the values we want.
-  QString data = frame->toHtml();
-  //not always a Postscript.....
-  QString search("Download:</h2>");
-  data =  data.right( data.size() - ( data.indexOf(search) + search.size() ) );
-  search ="\" accesskey=\"f\">PDF";
-  QString filename_download = data.left(data.indexOf(search)); 
-  QRegExp ps("<li>.*PostScript.*</li>");
-  filename_download.replace(ps,"");
-  filename_download.replace("<li><a href=\"","");
-  filename_download.replace("\n","");
-  filename_download.replace(cleanup,"");
-  filename_download = "http://arxiv.org" + filename_download;
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) );
+  _parser->setData(frame->toHtml());
+
+  Paper * paper = new Paper();
+  paper->set_title(_parser->getTitle());
+  paper->set_author(_parser->getAuthors());
+  paper->set_abstract(_parser->getAbstract());
+  paper->set_date(_parser->getDate());
+  paper->set_arxiv_number(_parser->getNumber());
 
   //Download the damn thing
   _manager = new QNetworkAccessManager(this);
-  _manager->get(QNetworkRequest(QUrl(filename_download)));
+  _manager->get(QNetworkRequest(QUrl(_parser->getDownloadLocation())));
   connect(_manager, SIGNAL(finished(QNetworkReply*)),
-	  this, SLOT(download_finished(QNetworkReply*)));
+  	  this, SLOT(download_finished(QNetworkReply*)));
 
-  search = "Title:</span>";
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) );
-  search = "</h1>";
-  QString title =  data.left(data.indexOf(search)); 
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
+  QDir directory(_current_library->get_library_directory()+"/"+_parser->getPaperName());
 
-  search = "Authors:</span>";
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
-  search = "</div>";
-  QString author =   data.left(data.indexOf(search) ); 
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
-  author.replace(cleanup, " ");
-  author.replace("\n", " ");
-
-  search = "(Submitted on ";
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
-  search = ")";
-  QString date_str =   data.left(data.indexOf(search) ); 
-  date_str.replace(cleanup, "");
-  date_str.replace(QRegExp("v[0-9]"), "");
-  date_str.replace("(", "");
-  date_str.replace(" ", "");
-  QDate date = QDate::fromString(date_str,"dMMMyyyy");  
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
-  _stdout << date_str << endl;
-  _stdout << date.toString() << endl;
-
-  search = "Abstract:</span>";
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
-  search = "</blockquote>";
-  QString abstract =  data.left(data.indexOf(search) ); 
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) ); 
-  
-  search = "<td class=\"tablecell arxivid\">";
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) );
-  search = "</td>";
-  QString arxivnum =  data.left(data.indexOf(search) );
-  data =  data.right(data.size() - ( data.indexOf(search) + search.size() ) );
-  arxivnum.replace(cleanup, " ");
-  _stdout << arxivnum << endl;
-  
-  //now make a paper
-  Paper * paper = new Paper();
-  paper->set_title(title);
-  paper->set_author(author);
-  paper->set_abstract(abstract);
-  paper->set_date(date);
-  paper->set_arxiv_number(arxivnum);
-  filename_download.replace("http://arxiv.org","");
-  filename_download.replace(QRegExp(".*/"),"");
-  filename_download =  filename_download + ".pdf";
-  _stdout << "Collection::import_paper " <<  filename_download << endl; 
-
-  QDir directory(_current_library->get_library_directory()+"/"+filename_download);
   _stdout << "Collection::import_paper " <<  directory.absolutePath() << endl; 
+
   paper->set_file_name(directory.absolutePath());
   
   //add the entry to the library
@@ -504,6 +439,7 @@ void Collection::import_paper()
   //add the entry to the list
   add_paper_to_list(*paper,_paper_list);
   update_library_list();
+
 }
 
 //----------------------------------------------------------------a
@@ -905,18 +841,21 @@ void Collection::writeSettings()
 void Collection::check_url(const QUrl& url)
 {
   //make sure we are looking at abstract in order to enable import.
+  //here we could have a map of parsers and a parser can answer if it can parse a page or not...
+
   QString url_str = url.toString();
   _stdout << "Current URl" << url_str << endl;
 
   if ( url_str.indexOf("http://arxiv.org/abs/") != -1 )
     {
       paperImport->setEnabled(true);
-      _parser = static_cast<Parser *>(new ArxivParser(url));
+      _parser = static_cast<Parser *>(new ArxivParser());
+
     }
   else if (  url_str.indexOf("http://www.slac.stanford.edu/spires/find/hep/www?irn") != -1 )
     {
       paperImport->setEnabled(true);
-      _parser = static_cast<Parser *>(new SpiresParser(url));
+      _parser = static_cast<Parser *>(new SpiresParser());
     }
   else
     {

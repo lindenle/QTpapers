@@ -7,14 +7,15 @@ class ArxivParser : public Parser
 {
 
  public:
- ArxivParser(const QUrl & url ): 
-  Parser(url) {;}
+  ArxivParser(){;}
   
   QString getTitle();
   QString getAuthors();
   QString getAbstract();
   QString getPaperName();
-  QString getDownloadLocation();
+  QUrl getDownloadLocation();
+  QDate getDate();
+  QString getNumber();
 };
 
 #endif //__ARXIV_PARSER__

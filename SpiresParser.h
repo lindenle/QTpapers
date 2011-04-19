@@ -7,15 +7,15 @@ class SpiresParser : public Parser
 {
  public:
 
- SpiresParser(const QUrl & url ) : 
-  Parser(url) {;}
+ SpiresParser(){;}
 
   QString getTitle();
   QString getAuthors();
   QString getAbstract();
   QString getPaperName();
-  QString getDownloadLocation();
-
+  QUrl    getDownloadLocation();
+  QDate   getDate();
+  QString getNumber();
 };
 
 #endif //__SPIRES_PARSER__

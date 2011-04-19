@@ -7,13 +7,17 @@
 #include <QWebPage>
 #include <QWebFrame>
 #include <QUrl>
+#include <QDate>
+#include <QTextStream>
 
 class Parser 
 {
  public:
-  Parser(const QUrl & url)
+ Parser():
+  _cleanup("<.*>"),
+  _stdout(stdout)
     {
-      _url = url;
+      _cleanup.setMinimal(true);
     }
 
   ~Parser();
@@ -23,22 +27,16 @@ class Parser
   virtual QString getAuthors()=0;
   virtual QString getAbstract()=0;
   virtual QString getPaperName()=0;
-  virtual QString getDownloadLocation()=0;
+  virtual QUrl    getDownloadLocation()=0;
+  virtual QDate   getDate()=0;
+  virtual QString getNumber()=0;
 
-  void cleanupHtmlTags();
-  /* void setFrame(const QWebFrame & f){ _frame=f;} */
-  /* void setPage(const QWebPage & p ){ _page=p;} */
-  void setUrl(const QUrl & url) { _url = url;} 
-  /* QWebFrame getFrame(void){ return _frame;} */
-  /* QWebPage  getPage(void){ return _page;} */
-  /* QUrl      getUrl(void) { return _url;}      */
+  void setData(const QString & data){_data = data;}
 
- private:
-  QWebPage  * _page;
-  QWebFrame * _frame;
+ protected:
   QString _data;
-  QRegExp * _reg_exp;
-  QUrl _url;
+  QRegExp _cleanup;
+  QTextStream _stdout;
 };
 
 #endif //__PARSER__
