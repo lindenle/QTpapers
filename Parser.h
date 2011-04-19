@@ -6,14 +6,14 @@
 #include <QRegExp>
 #include <QWebPage>
 #include <QWebFrame>
+#include <QUrl>
 
 class Parser 
 {
  public:
-  Parser(QWebPage * page = 0, QWebFrame * frame = 0)
+  Parser(const QUrl & url)
     {
-      _frame = frame;
-      _page=page;
+      _url = url;
     }
 
   ~Parser();
@@ -26,14 +26,19 @@ class Parser
   virtual QString getDownloadLocation()=0;
 
   void cleanupHtmlTags();
-  void setFrame(QWebFrame * f){_frame=f;}
-  void setPage(QWebPage * p ){_page=p;}
+  /* void setFrame(const QWebFrame & f){ _frame=f;} */
+  /* void setPage(const QWebPage & p ){ _page=p;} */
+  void setUrl(const QUrl & url) { _url = url;} 
+  /* QWebFrame getFrame(void){ return _frame;} */
+  /* QWebPage  getPage(void){ return _page;} */
+  /* QUrl      getUrl(void) { return _url;}      */
 
  private:
-  QWebPage * _page;
+  QWebPage  * _page;
   QWebFrame * _frame;
-  QString * _data;
+  QString _data;
   QRegExp * _reg_exp;
+  QUrl _url;
 };
 
 #endif //__PARSER__

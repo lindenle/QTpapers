@@ -5,7 +5,11 @@
 
 class ArxivParser : public Parser
 {
+
  public:
+ ArxivParser(const QUrl & url ): 
+  Parser(url) {;}
+  
   QString getTitle();
   QString getAuthors();
   QString getAbstract();

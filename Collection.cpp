@@ -18,6 +18,8 @@
 #include "Collection.h"
 #include "PrefDialog.h"
 #include "ImporterDialog.h"
+#include "ArxivParser.h"
+#include "SpiresParser.h"
 
 Collection::Collection() :
   _current_library(0),
@@ -407,6 +409,9 @@ void Collection::import_paper()
     }
 
   _stdout << "Need to parse " << _rss_box->url().toString() << endl; 
+  //here we are just going to pass the url to the parser;
+
+  //_parser->setUrl(_rss_box->url());
 
   //should check if this is actually a paper page
   QWebPage * page = _rss_box->page();
@@ -906,12 +911,12 @@ void Collection::check_url(const QUrl& url)
   if ( url_str.indexOf("http://arxiv.org/abs/") != -1 )
     {
       paperImport->setEnabled(true);
-      //      _parser = new ArxivParser();
+      _parser = static_cast<Parser *>(new ArxivParser(url));
     }
   else if (  url_str.indexOf("http://www.slac.stanford.edu/spires/find/hep/www?irn") != -1 )
     {
       paperImport->setEnabled(true);
-      //      _parser = new SpiresParser();
+      _parser = static_cast<Parser *>(new SpiresParser(url));
     }
   else
     {

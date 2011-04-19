@@ -6,6 +6,10 @@
 class SpiresParser : public Parser
 {
  public:
+
+ SpiresParser(const QUrl & url ) : 
+  Parser(url) {;}
+
   QString getTitle();
   QString getAuthors();
   QString getAbstract();

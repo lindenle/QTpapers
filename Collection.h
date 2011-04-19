@@ -25,6 +25,8 @@ class PaperList;
 #include "RssWidget.h"
 class RssWidget;
 
+#include "Parser.h"
+
 class Collection: public QMainWindow
 {
 
@@ -109,6 +111,8 @@ class Collection: public QMainWindow
 
 
   QToolBar *paperToolBar;
+
+  Parser * _parser;
 
  protected:
   
