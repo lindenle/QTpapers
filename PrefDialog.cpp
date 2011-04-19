@@ -4,17 +4,24 @@
 #include <QProcess>
 #include <QSettings>
 
-PrefDialog::PrefDialog(QWidget * parent) :
-  QDialog(parent)
+PrefDialog::PrefDialog(QWidget * parent, QString extra_text) :
+  QDialog(parent),
+  _stdout(stdout)
 {
-  setWindowTitle(tr("Preferences"));
+  setFixedWidth(500.);
+  QString my_text(" - ");
+  my_text+=extra_text;
+  if ( extra_text != "" )
+    setWindowTitle(tr("Modify Preferences%1").arg(my_text));
+  else
+    setWindowTitle(tr("Modify Preferences"));
 
   _viewer = new QLabel(tr("PDF Viewer"));
-  _viewer_edit = new QLineEdit;
+  _viewer_edit = new QLineEdit("",this);
   _viewer->setBuddy(_viewer_edit);
   _search_viewer = new QPushButton(tr("Search"));  
   _converter = new QLabel(tr("PDF Converter"));
-  _converter_edit = new QLineEdit;
+  _converter_edit = new QLineEdit("",this);
   _converter->setBuddy(_converter_edit);
   _search_converter = new QPushButton(tr("Search"));  
 
@@ -72,10 +79,16 @@ void PrefDialog::ok_clicked()
   //store the new settings into
   QSettings settings("LindenLevy", "QtPapers");
   settings.beginGroup("Collection Preferences");
-  QDir viewer_directory(_viewer_edit->text());
-  settings.setValue("PDF Viewer", viewer_directory.absolutePath());
-  QDir converter_directory(_converter_edit->text());
-  settings.setValue("PDF Converter", converter_directory.absolutePath());
+  if ( _viewer_edit->text() != "" )
+    {
+      QDir viewer_directory(_viewer_edit->text());
+      settings.setValue("PDF Viewer", viewer_directory.absolutePath());
+    }
+  if ( _converter_edit->text() != "" )
+    {
+      QDir converter_directory(_converter_edit->text());
+      settings.setValue("PDF Converter", converter_directory.absolutePath());
+    }
   settings.endGroup();
   close();
 }

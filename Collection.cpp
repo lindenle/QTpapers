@@ -636,17 +636,27 @@ void Collection::open_paper()
 	    {
 	      QSettings settings("LindenLevy", "QtPapers");
 	      settings.beginGroup("Collection Preferences");
-	      QDir pdf_view(settings.value("PDF Viewer").toString());
-	      settings.endGroup();
-	      _stdout << " Viewer >>>> " << pdf_view.absolutePath() << endl;
-	      //check to see if viewer exists
-	      if ( ! pdf_view.exists() )
+	      //make sure we have this preference
+	      if ( settings.value("PDF Viewer").toString() == "" )
 		{
-		  //if it does not exist throw a warning and open the
-		  //prefs dialog
-		  modify_preferences();
+		  modify_preferences("No viewer defined");
+		  return;
 		}
-
+	      QDir pdf_view(settings.value("PDF Viewer").toString());
+	      
+	       settings.endGroup();
+	       _stdout << " Viewer >>>> " << pdf_view.absolutePath() << endl;
+	       
+	       //check to see if viewer exists
+	       
+	       if ( ! QFile::exists(pdf_view.absolutePath()) )
+		 {
+		   //if it does not exist throw a warning and open the
+		   //prefs dialog
+		   modify_preferences("Viewer does not exist");
+		   return;
+		 }
+	       
 
 
 	      QString program(pdf_view.absolutePath());
@@ -936,10 +946,10 @@ void Collection::download_finished(QNetworkReply* reply)
 
 }
 //----------------------------------------------------------
-void Collection::modify_preferences()
+void Collection::modify_preferences(QString text)
 {
   
-  PrefDialog dialog(this);
+  PrefDialog dialog(this, text);
   dialog.show();
   dialog.hasFocus();
   dialog.exec();

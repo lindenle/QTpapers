@@ -42,7 +42,7 @@ class Collection: public QMainWindow
   void save_library();
   void open_library();
   void delete_library();
-  void modify_preferences();
+  void modify_preferences(QString text="");
   void new_paper();
   void edit_paper();
   void delete_paper();

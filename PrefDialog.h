@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QSignalMapper>
+#include <QTextStream>
 
 
 class PrefDialog : public QDialog
@@ -16,7 +17,7 @@ class PrefDialog : public QDialog
 
  public:
 
-  PrefDialog(QWidget * parent = 0);
+  PrefDialog(QWidget * parent = 0, QString extra_text="");
 
  public slots:
   void open_search(QString who);
@@ -41,7 +42,7 @@ class PrefDialog : public QDialog
   QPushButton * _ok;
   QPushButton * _cancel;
   QVBoxLayout * _topdown;
-
+  QTextStream _stdout;
 };
 
 #endif // __PREFDIALOG_H__
