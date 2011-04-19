@@ -638,8 +638,19 @@ void Collection::open_paper()
 	      settings.beginGroup("Collection Preferences");
 	      QDir pdf_view(settings.value("PDF Viewer").toString());
 	      settings.endGroup();
-	      QString program(pdf_view.absolutePath());
+	      _stdout << " Viewer >>>> " << pdf_view.absolutePath() << endl;
+	      //check to see if viewer exists
+	      if ( ! pdf_view.exists() )
+		{
+		  //if it does not exist throw a warning and open the
+		  //prefs dialog
+		  modify_preferences();
+		}
 
+
+
+	      QString program(pdf_view.absolutePath());
+	      
 	      QStringList arguments;
 	   
 	      arguments << directory.absolutePath();

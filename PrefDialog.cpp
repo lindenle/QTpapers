@@ -13,12 +13,20 @@ PrefDialog::PrefDialog(QWidget * parent) :
   _viewer_edit = new QLineEdit;
   _viewer->setBuddy(_viewer_edit);
   _search_viewer = new QPushButton(tr("Search"));  
-  connect(_search_viewer, SIGNAL(clicked()), this, SLOT(open_search()));
   _converter = new QLabel(tr("PDF Converter"));
   _converter_edit = new QLineEdit;
   _converter->setBuddy(_converter_edit);
   _search_converter = new QPushButton(tr("Search"));  
-  connect(_search_converter, SIGNAL(clicked()), this, SLOT(open_search()));
+
+  // a way to map the signals
+  _mapper = new QSignalMapper(this);
+  _mapper->setMapping(_search_viewer,"viewer");
+  _mapper->setMapping(_search_converter,"converter");
+
+  connect(_search_viewer, SIGNAL( clicked() ), _mapper, SLOT( map() ) );
+  connect(_search_converter, SIGNAL( clicked() ), _mapper, SLOT( map() ) );
+  connect(_mapper,SIGNAL( mapped( QString ) ), this, SLOT( open_search( QString) ) );
+ 
   QSettings settings("LindenLevy", "QtPapers");
   //read back in the settings
   settings.beginGroup("Collection Preferences");
@@ -72,7 +80,7 @@ void PrefDialog::ok_clicked()
   close();
 }
 
-void PrefDialog::open_search()
+void PrefDialog::open_search(QString who)
 {
 
   QFileDialog dialog(this);
@@ -85,7 +93,10 @@ void PrefDialog::open_search()
     {
       fileNames = dialog.selectedFiles();
       // need to know who called me so I can set the value in the correct box
-      //      _viewer->setText(fileNames.at(0));
+      if ( who == "converter" )
+	_converter_edit->setText(fileNames.at(0));
+      else
+	_viewer_edit->setText(fileNames.at(0));
     }  
 }
 

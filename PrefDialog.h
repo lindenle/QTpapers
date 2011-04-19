@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QSignalMapper>
 
 
 class PrefDialog : public QDialog
@@ -18,7 +19,7 @@ class PrefDialog : public QDialog
   PrefDialog(QWidget * parent = 0);
 
  public slots:
-  void open_search();
+  void open_search(QString who);
   void ok_clicked();
 
  protected:
@@ -33,6 +34,7 @@ class PrefDialog : public QDialog
   QLineEdit * _viewer_edit;
   QLabel * _converter;
   QLineEdit * _converter_edit;
+  QSignalMapper * _mapper;
   QPushButton * _search_viewer;
   QPushButton * _search_converter;
   QPushButton * _open;
