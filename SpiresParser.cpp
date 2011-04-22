@@ -51,8 +51,16 @@ QString SpiresParser::getPaperName()
 
 QUrl SpiresParser::getDownloadLocation()
 {
-  QUrl location;
-
+  QString search = "PDF";
+  QString location_url_str= _data.left(_data.indexOf(search));
+  search = "href=";
+  location_url_str = location_url_str.right( location_url_str.size() - ( location_url_str.lastIndexOf(search)+search.size() ) );
+  location_url_str.replace(_cleanup,"");
+  location_url_str.replace("\n","");
+  location_url_str.replace(">", "");
+  location_url_str.replace(" ", "");
+  _stdout << "SpiresParser::getLocation " << location_url_str << endl;
+  QUrl location(location_url_str);  
   return location;
 }
 
