@@ -18,7 +18,7 @@ QString SpiresParser::getAuthors()
   QString authors = _data.right(_data.size() - ( _data.indexOf(search) + search.size() ) );
   search = "</i></a>";
   authors = authors.left( authors.indexOf(search) );
-  authors.replace(QRegExp(".*[0-9]>"),"");
+  authors.replace(QRegExp(".*[0-9]\">"),"");
   authors.replace(_cleanup,"");
   authors.replace("\n","");
   //here we really want to grab the url from spires and get all the authors...
@@ -27,8 +27,18 @@ QString SpiresParser::getAuthors()
 
 QString SpiresParser::getAbstract()
 {
+  QString search = "Abstract";
+  QString abstract_url_str= _data.left(_data.indexOf(search));
+  search = "href=";
+  abstract_url_str = abstract_url_str.right( abstract_url_str.size() - ( abstract_url_str.lastIndexOf(search)+search.size() ) );
+  abstract_url_str.replace(_cleanup,"");
+  abstract_url_str.replace("\n","");
+  abstract_url_str.replace(">", "");
+  abstract_url_str.replace(" ", "");
+  _stdout << "SpiresParser::getAbstract " << abstract_url_str << endl;
+  QUrl abstract_url(abstract_url_str);  
+  //fetch the url and parse... how to do this...
   QString abstract;
-
   return abstract;
 }
 
@@ -48,8 +58,17 @@ QUrl SpiresParser::getDownloadLocation()
 
 QDate SpiresParser::getDate()
 {
-  QDate date;
 
+  QString search = "</i></a>";
+  QString date_str = _data.right(_data.size() - ( _data.indexOf(search) + search.size() ) );
+  search = "<a href=";
+  date_str = date_str.left( date_str.indexOf(search) );
+  search = ".";
+  date_str = date_str.left( date_str.indexOf(search) );
+  date_str.replace(_cleanup,"");
+  date_str.replace("\n","");
+  date_str.replace(" ", "");
+  QDate date = QDate::fromString(date_str,"MMMyyyy");
   return date;
 }
 
