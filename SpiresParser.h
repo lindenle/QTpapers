@@ -17,6 +17,7 @@ class SpiresParser : public Parser
   QDate   getDate();
   QString getNumber();
 
+
 };
 
 #endif //__SPIRES_PARSER__

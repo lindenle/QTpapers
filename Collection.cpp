@@ -425,7 +425,7 @@ void Collection::import_paper()
 
   //Download the damn thing
   _manager = new QNetworkAccessManager(this);
-  _manager->get(QNetworkRequest(QUrl(_parser->getDownloadLocation())));
+  _manager->get(QNetworkRequest(_parser->getDownloadLocation());
   connect(_manager, SIGNAL(finished(QNetworkReply*)),
   	  this, SLOT(download_finished(QNetworkReply*)));
 

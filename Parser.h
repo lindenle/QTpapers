@@ -9,13 +9,15 @@
 #include <QUrl>
 #include <QDate>
 #include <QTextStream>
+#include <QNetworkAccessManager>
 
 class Parser 
 {
  public:
  Parser():
   _cleanup("<.*>"),
-  _stdout(stdout)
+  _stdout(stdout),
+  _net_manager_done(false)
     {
       _cleanup.setMinimal(true);
     }
@@ -32,11 +34,14 @@ class Parser
   virtual QString getNumber()=0;
 
   void setData(const QString & data){_data = data;}
+  QString fetchPageData(const QUrl & url);
 
  protected:
   QString _data;
   QRegExp _cleanup;
   QTextStream _stdout;
+  QNetworkAccessManager * _net_manager;
+  bool _net_manager_done;
 };
 
 #endif //__PARSER__
