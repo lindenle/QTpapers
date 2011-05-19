@@ -34,7 +34,7 @@ class Parser
   virtual QString getNumber()=0;
 
   void setData(const QString & data){_data = data;}
-  QString fetchPageData(const QUrl & url);
+  QString requestPageData(const QUrl & url);
 
  protected:
   QString _data;
