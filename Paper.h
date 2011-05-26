@@ -39,5 +39,4 @@ class Paper : public Entry
   QString _abstract;
   
 };
-
 #endif ///__PAPER_H__
