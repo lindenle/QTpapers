@@ -8,4 +8,7 @@ Some notes of things I want to do to make this package better
 each type? This would make it easy to extend this to a plugin in
 framework so that anyone could write a parser for any page.
 
+3. Exception handling needs to be added.
+
+4. Doxygen documentation comments need to be added.
 
